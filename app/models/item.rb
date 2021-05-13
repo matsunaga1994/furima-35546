@@ -21,11 +21,7 @@ class Item < ApplicationRecord
     validates :image
   end
 
-  with_options numericality: { other_than: 1 } do
-    validates :category_id
-    validates :status_id
-    validates :burden_id
-    validates :prefecture_id
-    validates :day_id
-  end
+validates :price, numericality: { greater_than_or_equal_to: 300, 
+  less_than_or_equal_to: 9999999, message: 'Out of setting range' }, 
+  format: { with: /\A[0-9]\d+\z/, message: 'Price is invalid. Harf-width characters' }
 end
