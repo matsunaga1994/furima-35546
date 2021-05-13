@@ -69,7 +69,19 @@ RSpec.describe Item, type: :model do
       it 'priceが全角だと出品できない' do
         @item.price = "１０００"
         @item.valid?
-        expect(@item.errors.full_messages).to include("Price Price is invalid. Harf-width characters")
+        expect(@item.errors.full_messages).to include("Price is invalid. Harf-width characters")
+      end
+
+      it 'priceが半角英文字の場合は出品できない' do
+        @item.price = "test"
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Price is invalid. Harf-width characters")
+      end
+
+      it 'priceが半角英数混合の場合出品できない' do
+        @item.price = "test1234"
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Price is invalid. Harf-width characters")
       end
 
       it 'imageが空だと出品できない' do
