@@ -1,5 +1,6 @@
 class PurchasesController < ApplicationController
   before_action :set_item
+  before_action :remove_to_root_pass
 
   def index
     @purchase_shopping_address = PurchaseShoppingAddress.new
@@ -32,5 +33,11 @@ class PurchasesController < ApplicationController
       card: purchase_params[:token],
       currency: 'jpy'  
     )
+  end
+
+  def remove_to_root_pass
+    if @item.purchase.present? 
+      redirect_to root_path
+    end
   end
 end
