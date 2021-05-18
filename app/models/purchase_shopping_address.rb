@@ -10,6 +10,7 @@ class PurchaseShoppingAddress
     validates :city
     validates :address
     validates :phone_number, numericality: {only_integer: true,  message: "is invalid. Input only number"}, length: {minimum: 10}
+    validates :token
   end
 
   def save
