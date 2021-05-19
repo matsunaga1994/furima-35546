@@ -13,6 +13,11 @@ RSpec.describe PurchaseShoppingAddress, type: :model do
       it "全ての情報が正しく入力されている場合保存できること" do
         expect(@purchase_shopping_address).to be_valid
       end
+
+      it "building_nameが空でも保存できること" do
+        @purchase_shopping_address.building_name = ""
+        expect(@purchase_shopping_address).to be_valid
+      end 
     end
 
     context '内容に問題がある場合' do
@@ -52,11 +57,6 @@ RSpec.describe PurchaseShoppingAddress, type: :model do
         expect(@purchase_shopping_address.errors.full_messages).to include("Address can't be blank")
       end
 
-      it "building_nameが空でも保存できること" do
-        @purchase_shopping_address.building_name = ""
-        expect(@purchase_shopping_address).to be_valid
-      end
-
       it "phone_numberが空だと登録できないこと" do
         @purchase_shopping_address.phone_number = ""
         @purchase_shopping_address.valid?
@@ -69,10 +69,34 @@ RSpec.describe PurchaseShoppingAddress, type: :model do
         expect(@purchase_shopping_address.errors.full_messages).to include("Phone number is invalid. Input only number")
       end
 
-      it "phone_numberが９文字以下だと登録できないこと" do
+      it "phone_numberが９桁以下だと登録できないこと" do
         @purchase_shopping_address.phone_number = "090123456"
         @purchase_shopping_address.valid?
         expect(@purchase_shopping_address.errors.full_messages).to include("Phone number is too short")
+      end
+
+      it "phone_numberが英数混合では登録できないこと" do
+        @purchase_shopping_address.phone_number = "090abcdefg"
+        @purchase_shopping_address.valid?
+        expect(@purchase_shopping_address.errors.full_messages).to include("Phone number is invalid. Input only number")
+      end
+
+      it "phone_numberが12桁以上だと登録できないこと" do
+        @purchase_shopping_address.phone_number = "090123456789"
+        @purchase_shopping_address.valid?
+        expect(@purchase_shopping_address.errors.full_messages).to include("Phone number is too long")
+      end
+
+      it "usr_idが空だと登録できないこと" do
+        @purchase_shopping_address.user_id = nil
+        @purchase_shopping_address.valid?
+        expect(@purchase_shopping_address.errors.full_messages).to include("User can't be blank")
+      end
+
+      it "item_idが空だと登録できないこと" do
+        @purchase_shopping_address.item_id = nil
+        @purchase_shopping_address.valid?
+        expect(@purchase_shopping_address.errors.full_messages).to include("Item can't be blank")
       end
     end
   end
