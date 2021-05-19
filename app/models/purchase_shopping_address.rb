@@ -1,6 +1,6 @@
 class PurchaseShoppingAddress
   include ActiveModel::Model
-  attr_accessor :user_id, :item_id, :postal_code, :prefecture_id, :city, :address, :building_name, :phone_number, :purchase_id, :token
+  attr_accessor :user_id, :item_id, :postal_code, :prefecture_id, :city, :address, :building_name, :phone_number, :token
 
   with_options presence: true do
     validates :token
@@ -10,8 +10,11 @@ class PurchaseShoppingAddress
     validates :prefecture_id
     validates :city
     validates :address
-    validates :phone_number, numericality: {only_integer: true,  message: "is invalid. Input only number"}, length: {minimum: 10, message: "is too short"}
+    validates :phone_number, numericality: {only_integer: true,  message: "is invalid. Input only number"}
   end
+
+  validates :phone_number, length: {minimum: 10, message: "is too short"}
+  validates :phone_number, length: {maximum: 11, message: "is too long"}
 
   def save
     purchase = Purchase.create(user_id: user_id, item_id: item_id)
