@@ -36,7 +36,7 @@ class PurchasesController < ApplicationController
   end
 
   def remove_to_root_pass
-    if @item.purchase.present? 
+    if @item.purchase.present? || current_user.id == @item.user_id
       redirect_to root_path
     end
   end
